@@ -22,12 +22,13 @@ public class UserController {
         this.userMapper = userMapper;
     }
     @PostMapping(path = "/users")
-    public UserDto createUser(@RequestBody UserDto user)
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user)
     {
         UserEntity userEntity = userMapper.mapFrom(user);
         System.out.println(userEntity.toString());
         UserEntity userEntitySavedInDataBase = userService.save(userEntity);
-        return userMapper.mapTo(userEntity);
+        return new ResponseEntity<>(userMapper.mapTo(userEntity),HttpStatus.OK);
+
 
     }
 
