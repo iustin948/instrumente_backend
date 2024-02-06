@@ -4,6 +4,7 @@ import com.example.backend.domain.dto.UserDto;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.mappers.Mapper;
 import com.example.backend.services.UserService;
+import org.apache.catalina.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +48,10 @@ public class UserController {
     }
 
     @GetMapping(path = "/users/{id}")
-    public UserDto getUser(@PathVariable Long id)
+    public ResponseEntity<UserDto> getUser(@PathVariable Long id)
     {
         UserEntity userEntity = userService.findUserById(id);
-        return userMapper.mapTo(userEntity);
+        return new ResponseEntity<>(userMapper.mapTo(userEntity), HttpStatus.OK);
     }
 
     @GetMapping(path = "users")
