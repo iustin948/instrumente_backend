@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -23,6 +24,6 @@ public class ProductDto {
     private String description;
     private double price;
     private String category;
-    private Date postedDate;
+    private LocalDateTime postedDate = LocalDateTime.now();
     private UserEntity seller;
 }

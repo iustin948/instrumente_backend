@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,7 +17,7 @@ public class ProductEntity {
     private String description;
     private double price;
     private String category;
-    private Date postedDate;
+    private LocalDateTime postedDate = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private UserEntity seller;

@@ -40,4 +40,8 @@ public class ProductServiceImpl implements ProductService {
         Optional<ProductEntity> byId =  productRespository.findById(id);
         return byId.orElse(null);
     }
+    @Override
+    public List<ProductEntity> findNew(int N) {
+        return null;
+    }
 }

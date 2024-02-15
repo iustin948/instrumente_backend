@@ -55,10 +55,10 @@ public class ProductController {
     }
 
     @GetMapping(path = "/products")
-    public List<ProductDto> findAll()
+    public ResponseEntity<List<ProductDto> > findAll()
     {
         List<ProductEntity> list = productService.findAll();
-        return list.stream().map(productMapper::mapTo).collect(Collectors.toList());
+        return new ResponseEntity<>( list.stream().map(productMapper::mapTo).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @GetMapping(path = "products/{id}")
@@ -67,5 +67,6 @@ public class ProductController {
         ProductEntity productEntity= productService.findProductById(id);
         return new ResponseEntity<>(productMapper.mapTo(productEntity), HttpStatus.OK);
     }
+
 
 }

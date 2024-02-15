@@ -10,4 +10,5 @@ public interface ProductService {
     public void delete(Long id);
     public List<ProductEntity> findAll();
     public ProductEntity findProductById(Long id);
+    public List<ProductEntity> findNew(int N);
 }
