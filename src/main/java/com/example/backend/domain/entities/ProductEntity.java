@@ -17,6 +17,7 @@ public class ProductEntity {
     private String description;
     private double price;
     private String category;
+    private String photoUrl;
     private LocalDateTime postedDate = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "seller_id")

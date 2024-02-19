@@ -10,7 +10,10 @@ import org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDet
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,8 +29,14 @@ public class ProductController {
         this.productMapper = productMapper;
     }
     @PostMapping(path = "/products")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto)
-    {
+    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto, @RequestParam("image") MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        String filePath = "/home/iustin/Desktop/instrumente_backend/images" + File.separator + fileName;
+
+        File dest = new File(filePath);
+        file.transferTo(dest); // Save file to the file system
+        productDto.setPhotoUrl(filePath);
+
         ProductEntity productEntity = productMapper.mapFrom(productDto);
         ProductEntity productEntityFromDatabase = productService.save(productEntity);
         return new ResponseEntity<>(productMapper.mapTo(productEntityFromDatabase), HttpStatus.CREATED);

@@ -24,6 +24,7 @@ public class ProductDto {
     private String description;
     private double price;
     private String category;
+    private String photoUrl;
     private LocalDateTime postedDate = LocalDateTime.now();
     private UserEntity seller;
 }
