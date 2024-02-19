@@ -44,4 +44,9 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductEntity> findNew(int N) {
         return null;
     }
+
+    @Override
+    public List<ProductEntity> findFirst50New(String category) {
+        return productRespository.findFirst50New(category);
+    }
 }

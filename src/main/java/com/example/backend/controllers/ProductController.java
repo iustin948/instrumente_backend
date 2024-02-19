@@ -68,5 +68,10 @@ public class ProductController {
         return new ResponseEntity<>(productMapper.mapTo(productEntity), HttpStatus.OK);
     }
 
-
+    @GetMapping(path = "products/new")
+    public ResponseEntity<List<ProductDto> > findNew50(@RequestParam(required = false) String category)
+    {
+        List<ProductEntity> list = productService.findFirst50New(category);
+        return new ResponseEntity<>( list.stream().map(productMapper::mapTo).collect(Collectors.toList()), HttpStatus.OK);
+    }
 }

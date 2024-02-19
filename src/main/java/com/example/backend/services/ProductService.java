@@ -11,4 +11,5 @@ public interface ProductService {
     public List<ProductEntity> findAll();
     public ProductEntity findProductById(Long id);
     public List<ProductEntity> findNew(int N);
+    public List<ProductEntity> findFirst50New(String category);
 }
