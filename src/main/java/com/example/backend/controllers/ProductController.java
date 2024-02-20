@@ -8,6 +8,7 @@ import com.example.backend.mappers.impl.ProductMapperImpl;
 import com.example.backend.services.ProductService;
 import org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDetails;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,8 +29,8 @@ public class ProductController {
         this.productService = productService;
         this.productMapper = productMapper;
     }
-    @PostMapping(path = "/products")
-    public ResponseEntity<ProductDto> createProduct(@RequestBody ProductDto productDto, @RequestParam("image") MultipartFile file) throws IOException {
+    @PostMapping(path = "/products" )
+    public ResponseEntity<ProductDto> createProduct( @ModelAttribute ProductDto productDto, @RequestParam("image") MultipartFile file ) throws IOException {
         String fileName = file.getOriginalFilename();
         String filePath = "/home/iustin/Desktop/instrumente_backend/images" + File.separator + fileName;
 

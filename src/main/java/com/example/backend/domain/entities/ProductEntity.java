@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -16,10 +15,13 @@ public class ProductEntity {
     private String title;
     private String description;
     private double price;
-    private String category;
     private String photoUrl;
     private LocalDateTime postedDate = LocalDateTime.now();
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private UserEntity seller;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
 }
