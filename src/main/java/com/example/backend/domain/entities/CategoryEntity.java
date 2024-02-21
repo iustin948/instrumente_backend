@@ -25,5 +25,9 @@ public class CategoryEntity {
     @OneToMany(mappedBy = "parentCategory")
     private List<CategoryEntity> subcategories;
 
+    public void addSubcategory(CategoryEntity category)
+    {
+        subcategories.add(category);
+    }
     // Getters and setters
 }

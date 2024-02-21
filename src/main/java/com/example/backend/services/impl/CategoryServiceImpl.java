@@ -10,6 +10,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
     CategoryRepository categoryRepository;
@@ -38,5 +39,24 @@ public class CategoryServiceImpl implements CategoryService {
         for(CategoryEntity subcategory : category.getSubcategories())
             collectProducts(subcategory,products);
     }
+    public CategoryEntity findById(Long id)
+    {
+        CategoryEntity category = categoryRepository.findById(id) .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        return category;
+    }
+
+    @Override
+    public List<CategoryEntity> findAll() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public CategoryEntity deleteById(Long id) {
+        CategoryEntity category = categoryRepository.findById(id) .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found"));
+        categoryRepository.deleteById(id);
+        return category;
+    }
+
+
 }
 
