@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.domain.dto.ProductDto;
 import com.example.backend.domain.entities.ProductEntity;
 
 import java.util.List;
@@ -12,4 +13,5 @@ public interface ProductService {
     public ProductEntity findProductById(Long id);
     public List<ProductEntity> findNew(int N);
     public List<ProductEntity> findFirst50New(String category);
+    public ProductDto mapEntityToDto(ProductEntity entity);
 }

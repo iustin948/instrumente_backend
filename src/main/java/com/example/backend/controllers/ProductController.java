@@ -5,6 +5,7 @@ import com.example.backend.domain.entities.ProductEntity;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.mappers.Mapper;
 import com.example.backend.mappers.impl.ProductMapperImpl;
+import com.example.backend.services.CategoryService;
 import com.example.backend.services.ProductService;
 import org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDetails;
 import org.springframework.http.HttpStatus;
@@ -24,23 +25,27 @@ public class ProductController {
 
     ProductService productService;
     Mapper<ProductEntity, ProductDto> productMapper;
-    ProductController(ProductService productService,Mapper<ProductEntity, ProductDto> productMapper)
+    CategoryService categoryService;
+    ProductController(ProductService productService,Mapper<ProductEntity, ProductDto> productMapper,CategoryService categoryService)
     {
         this.productService = productService;
         this.productMapper = productMapper;
+        this.categoryService = categoryService;
+
     }
     @PostMapping(path = "/products" )
-    public ResponseEntity<ProductDto> createProduct( @ModelAttribute ProductDto productDto, @RequestParam("image") MultipartFile file ) throws IOException {
-        String fileName = file.getOriginalFilename();
+    public ResponseEntity<ProductDto> createProduct( @RequestBody ProductDto productDto) throws IOException {
+        /*String fileName = file.getOriginalFilename();
         String filePath = "/home/iustin/Desktop/instrumente_backend/images" + File.separator + fileName;
 
         File dest = new File(filePath);
         file.transferTo(dest); // Save file to the file system
-        productDto.setPhotoUrl(filePath);
+        productDto.setPhotoUrl(filePath);*/
 
         ProductEntity productEntity = productMapper.mapFrom(productDto);
+        productEntity.setCategory(categoryService.findById(productDto.getCategory()));
         ProductEntity productEntityFromDatabase = productService.save(productEntity);
-        return new ResponseEntity<>(productMapper.mapTo(productEntityFromDatabase), HttpStatus.CREATED);
+        return new ResponseEntity<>(productService.mapEntityToDto(productEntityFromDatabase), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/products/{id}")
@@ -68,14 +73,15 @@ public class ProductController {
     public ResponseEntity<List<ProductDto> > findAll()
     {
         List<ProductEntity> list = productService.findAll();
-        return new ResponseEntity<>( list.stream().map(productMapper::mapTo).collect(Collectors.toList()), HttpStatus.OK);
+        List<ProductDto> dtoList = list.stream().map(productService::mapEntityToDto).toList();
+        return new ResponseEntity<>( dtoList, HttpStatus.OK);
     }
 
     @GetMapping(path = "products/{id}")
     public ResponseEntity<ProductDto> findById(@PathVariable Long id)
     {
         ProductEntity productEntity= productService.findProductById(id);
-        return new ResponseEntity<>(productMapper.mapTo(productEntity), HttpStatus.OK);
+        return new ResponseEntity<>(productService.mapEntityToDto(productEntity), HttpStatus.OK);
     }
 
     @GetMapping(path = "products/new")
@@ -83,5 +89,12 @@ public class ProductController {
     {
         List<ProductEntity> list = productService.findFirst50New(category);
         return new ResponseEntity<>( list.stream().map(productMapper::mapTo).collect(Collectors.toList()), HttpStatus.OK);
+    }
+    @GetMapping(path = "products/category/{id}")
+    public ResponseEntity<List<ProductDto> > findProductsByCategory(@PathVariable Long id)
+    {
+        List <ProductEntity> list = categoryService.findProductsByCategory(id);
+        List<ProductDto> dtoList = list.stream().map(productService::mapEntityToDto).toList();
+        return new ResponseEntity<>( dtoList, HttpStatus.OK);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.backend.domain.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,6 +24,7 @@ public class CategoryEntity {
     private CategoryEntity parentCategory;
 
     @OneToMany(mappedBy = "parentCategory")
+    @JsonIgnore
     private List<CategoryEntity> subcategories;
 
     public void addSubcategory(CategoryEntity category)

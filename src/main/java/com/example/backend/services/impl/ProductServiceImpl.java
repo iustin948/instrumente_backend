@@ -1,5 +1,6 @@
 package com.example.backend.services.impl;
 
+import com.example.backend.domain.dto.ProductDto;
 import com.example.backend.domain.entities.ProductEntity;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.repositories.ProductRespository;
@@ -48,5 +49,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductEntity> findFirst50New(String category) {
         return productRespository.findFirst50New(category);
+    }
+
+    @Override
+    public ProductDto mapEntityToDto(ProductEntity entity)
+    {
+        ProductDto dto = new ProductDto();
+        dto.setPhotoUrl(entity.getPhotoUrl());
+        dto.setId(entity.getId());
+        dto.setDescription(entity.getDescription());
+        dto.setPrice(entity.getPrice());
+        dto.setSeller(entity.getSeller());
+        dto.setTitle(entity.getTitle());
+        dto.setCategory(entity.getCategory().getId());
+        dto.setPostedDate(entity.getPostedDate());
+        return dto;
     }
 }

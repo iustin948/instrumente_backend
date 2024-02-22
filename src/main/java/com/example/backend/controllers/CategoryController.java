@@ -1,6 +1,7 @@
 package com.example.backend.controllers;
 
 import com.example.backend.domain.dto.CategoryDto;
+import com.example.backend.domain.dto.CategoryInputDto;
 import com.example.backend.domain.dto.ProductDto;
 import com.example.backend.domain.entities.CategoryEntity;
 import com.example.backend.domain.entities.ProductEntity;
@@ -25,14 +26,14 @@ public class CategoryController {
     }
 
     @PostMapping(path = "/category")
-    public ResponseEntity<CategoryDto> addNewCategory(@RequestBody CategoryDto categoryDto)
+    public ResponseEntity<CategoryDto> addNewCategory(@RequestBody CategoryInputDto categoryInputDto)
     {
-
-        {
-            CategoryEntity categoryEntity = categoryMapper.mapFrom(categoryDto);
-            CategoryEntity categoryEntityFromDatabase = categoryService.addCategory(categoryEntity);
-            return new ResponseEntity<>(categoryMapper.mapTo(categoryEntityFromDatabase), HttpStatus.CREATED);
-        }
+        CategoryEntity category = new CategoryEntity();
+        category.setName(categoryInputDto.getName());
+        if(categoryInputDto.getParent_id() != null)
+            category.setParentCategory( categoryService.findById(categoryInputDto.getParent_id()) );
+        CategoryEntity categoryFromDatabase = categoryService.addCategory(category);
+        return new ResponseEntity<>(categoryMapper.mapTo(categoryFromDatabase),HttpStatus.OK);
     }
     @PutMapping(path = "/category/{id}")
     public ResponseEntity<CategoryDto> modifyCategory(@RequestBody CategoryDto category, @PathVariable Long id)
@@ -64,5 +65,6 @@ public class CategoryController {
         CategoryEntity category= categoryService.findById(id);
         return new ResponseEntity<>(categoryMapper.mapTo(category),HttpStatus.OK);
     }
+
 
 }
