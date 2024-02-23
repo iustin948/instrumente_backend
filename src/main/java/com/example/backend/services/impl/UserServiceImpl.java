@@ -3,6 +3,7 @@ package com.example.backend.services.impl;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,9 +15,16 @@ import java.util.stream.StreamSupport;
 @Service
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
+
     UserServiceImpl(UserRepository userRepository)
     {
         this.userRepository = userRepository;
+    }
+
+    public void login()
+    {
+
     }
     @Override
     public UserEntity save(UserEntity userEntity) {

@@ -22,6 +22,7 @@ public class UserEntity {
     private String phoneNumber;
     private Date registrationDate;
     private float rating;
+    private String login;
 
 
 
