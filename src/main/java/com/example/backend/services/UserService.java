@@ -1,5 +1,8 @@
 package com.example.backend.services;
 
+import com.example.backend.domain.dto.CredentialsDto;
+import com.example.backend.domain.dto.SignUpDto;
+import com.example.backend.domain.dto.UserDto;
 import com.example.backend.domain.entities.UserEntity;
 
 import java.util.List;
@@ -11,5 +14,6 @@ public interface UserService {
     void deleteUser(Long id);
 
     boolean existsId(Long id);
-    public void login();
+    public UserDto login(CredentialsDto credentialsDto);
+    public UserDto register(SignUpDto signUpDto);
 }
