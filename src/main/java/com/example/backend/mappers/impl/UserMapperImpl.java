@@ -1,5 +1,6 @@
 package com.example.backend.mappers.impl;
 
+import com.example.backend.domain.dto.SignUpDto;
 import com.example.backend.domain.dto.UserDto;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.mappers.Mapper;
@@ -21,5 +22,11 @@ public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
     @Override
     public UserEntity mapFrom(UserDto userDto) {
         return modelMapper.map(userDto,UserEntity.class);
+    }
+
+    public UserDto mapSignUpToEntity(SignUpDto signUpDto){
+        UserDto userDto = new UserDto();
+        userDto.setFirst_name(signUpDto.firstName());
+        return userDto;
     }
 }

@@ -6,6 +6,7 @@ import com.example.backend.domain.dto.UserDto;
 import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.exceptions.AppException;
 import com.example.backend.mappers.Mapper;
+import com.example.backend.mappers.impl.UserMapperImpl;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ import java.util.stream.StreamSupport;
 public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
-    Mapper<UserEntity,UserDto> userMapper;
+    UserMapperImpl userMapper;
 
     @Override
     public UserDto login(CredentialsDto credentialsDto)
@@ -47,7 +48,8 @@ public class UserServiceImpl implements UserService {
             throw new AppException("Login already exists", HttpStatus.BAD_REQUEST);
         }
 
-       return null;
+        userRepository.save(userMapper.mapFrom(userMapper.mapSignUpToEntity(signUpDto)));
+        return userMapper.mapSignUpToEntity(signUpDto);
     }
 
     @Override
