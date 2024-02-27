@@ -26,7 +26,7 @@ public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
 
     public UserDto mapSignUpToEntity(SignUpDto signUpDto){
         UserDto userDto = new UserDto();
-        userDto.setFirst_name(signUpDto.firstName());
+        userDto.setFirstName(signUpDto.firstName());
         return userDto;
     }
 }
