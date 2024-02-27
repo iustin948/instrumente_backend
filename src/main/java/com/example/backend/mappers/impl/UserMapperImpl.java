@@ -7,6 +7,8 @@ import com.example.backend.mappers.Mapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Component
 public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
     private final ModelMapper modelMapper;
@@ -27,6 +29,9 @@ public class UserMapperImpl implements Mapper<UserEntity, UserDto> {
     public UserDto mapSignUpToEntity(SignUpDto signUpDto){
         UserDto userDto = new UserDto();
         userDto.setFirstName(signUpDto.firstName());
+        userDto.setEmail(signUpDto.email());
+        userDto.setLastName(signUpDto.lastName());
+        userDto.setPassword(Arrays.toString(signUpDto.password()));
         return userDto;
     }
 }
