@@ -2,11 +2,8 @@ package com.example.backend.services.impl;
 
 import com.example.backend.domain.dto.ProductDto;
 import com.example.backend.domain.entities.ProductEntity;
-import com.example.backend.domain.entities.UserEntity;
 import com.example.backend.repositories.ProductRespository;
 import com.example.backend.services.ProductService;
-import com.example.backend.services.UserService;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,9 +43,11 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+
+
     @Override
-    public List<ProductEntity> findFirst50New(String category) {
-        return productRespository.findFirst50New(category);
+    public List<ProductEntity> findFirst50New(Long category_id) {
+        return productRespository.findFirst50New(category_id);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         dto.setPrice(entity.getPrice());
         dto.setSeller(entity.getSeller());
         dto.setTitle(entity.getTitle());
-        dto.setCategory(entity.getCategory().getId());
+        dto.setCategoryId(entity.getCategory().getId());
         dto.setPostedDate(entity.getPostedDate());
         return dto;
     }

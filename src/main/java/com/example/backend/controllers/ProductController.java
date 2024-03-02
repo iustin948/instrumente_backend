@@ -7,6 +7,8 @@ import com.example.backend.mappers.Mapper;
 import com.example.backend.mappers.impl.ProductMapperImpl;
 import com.example.backend.services.CategoryService;
 import com.example.backend.services.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,19 +35,28 @@ public class ProductController {
         this.categoryService = categoryService;
 
     }
-    @PostMapping(path = "/products" )
-    public ResponseEntity<ProductDto> createProduct( @RequestBody ProductDto productDto) throws IOException {
-        /*String fileName = file.getOriginalFilename();
-        String filePath = "/home/iustin/Desktop/instrumente_backend/images" + File.separator + fileName;
+    @PostMapping(path = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
+    public ResponseEntity<ProductDto> createProduct(@RequestParam("product") String productJson,
+                                                    @RequestParam("file") List<MultipartFile> file) throws IOException {
 
-        File dest = new File(filePath);
-        file.transferTo(dest); // Save file to the file system
-        productDto.setPhotoUrl(filePath);*/
+        ProductDto productDto = new ObjectMapper().readValue(productJson, ProductDto.class);
+        for(int i=0; i < file.size(); i++)
+        {
+            String fileName = file.get(i).getOriginalFilename();
+            String filePath = "C:\\Users\\homor\\Desktop\\instrumente_backend\\images" + File.separator + fileName;
+            File dest = new File(filePath);
+            file.get(i).transferTo(dest); // Save file to the file system
+            productDto.getPhotoUrl().add(filePath);
+        }
 
         ProductEntity productEntity = productMapper.mapFrom(productDto);
-        productEntity.setCategory(categoryService.findById(productDto.getCategory()));
+        productEntity.setCategory(categoryService.findById(productDto.getCategoryId()));
         ProductEntity productEntityFromDatabase = productService.save(productEntity);
         return new ResponseEntity<>(productService.mapEntityToDto(productEntityFromDatabase), HttpStatus.CREATED);
+
+
+
+
     }
 
     @PutMapping(path = "/products/{id}")
@@ -85,9 +96,9 @@ public class ProductController {
     }
 
     @GetMapping(path = "products/new")
-    public ResponseEntity<List<ProductDto> > findNew50(@RequestParam(required = false) String category)
+    public ResponseEntity<List<ProductDto> > findNew50(@RequestParam(required = false) Long category_id)
     {
-        List<ProductEntity> list = productService.findFirst50New(category);
+        List<ProductEntity> list = productService.findFirst50New(category_id);
         return new ResponseEntity<>( list.stream().map(productMapper::mapTo).collect(Collectors.toList()), HttpStatus.OK);
     }
     @GetMapping(path = "products/category/{id}")
