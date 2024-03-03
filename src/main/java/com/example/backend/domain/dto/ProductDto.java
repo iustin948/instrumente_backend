@@ -27,4 +27,5 @@ public class ProductDto {
     private String condition;
     private UserEntity seller;
     private Long categoryId;
+    private String location;
 }

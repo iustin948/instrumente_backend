@@ -64,4 +64,9 @@ public class ProductServiceImpl implements ProductService {
         dto.setPostedDate(entity.getPostedDate());
         return dto;
     }
+
+    @Override
+    public List<ProductEntity> findProductsBySellerId(Long seller_id) {
+        return productRespository.findBySellerId(seller_id);
+    }
 }

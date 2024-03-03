@@ -46,7 +46,7 @@ public class ProductController {
             String filePath = "C:\\Users\\homor\\Desktop\\instrumente_backend\\images" + File.separator + fileName;
             File dest = new File(filePath);
             file.get(i).transferTo(dest); // Save file to the file system
-            productDto.getPhotoUrl().add(filePath);
+            productDto.getPhotoUrl().add(fileName);
         }
 
         ProductEntity productEntity = productMapper.mapFrom(productDto);
@@ -105,6 +105,14 @@ public class ProductController {
     public ResponseEntity<List<ProductDto> > findProductsByCategory(@PathVariable Long id)
     {
         List <ProductEntity> list = categoryService.findProductsByCategory(id);
+        List<ProductDto> dtoList = list.stream().map(productService::mapEntityToDto).toList();
+        return new ResponseEntity<>( dtoList, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "products/seller/{id}")
+    public ResponseEntity<List<ProductDto> > findProductsBySeller(@PathVariable Long id)
+    {
+        List <ProductEntity> list = productService.findProductsBySellerId(id);
         List<ProductDto> dtoList = list.stream().map(productService::mapEntityToDto).toList();
         return new ResponseEntity<>( dtoList, HttpStatus.OK);
     }

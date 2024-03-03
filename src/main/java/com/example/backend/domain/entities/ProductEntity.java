@@ -24,7 +24,7 @@ public class ProductEntity {
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private UserEntity seller;
-
+    private String location;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;

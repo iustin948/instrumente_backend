@@ -8,6 +8,7 @@ import com.example.backend.exceptions.AppException;
 import com.example.backend.mappers.impl.UserMapperImpl;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -61,7 +62,7 @@ public class UserServiceImpl implements UserService {
         Optional<UserEntity> byId = userRepository.findById(id);
         return byId.orElse(null);
     }
-
+    @Transactional
     @Override
     public List<UserEntity> findAll() {
         return new ArrayList<>(userRepository
