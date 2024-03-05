@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,8 +23,6 @@ public class UserEntity {
     private String phoneNumber;
     private Date registrationDate;
     private float rating;
-
-
-
-
+    @OneToMany
+    private List<ProductEntity> favorite;
 }

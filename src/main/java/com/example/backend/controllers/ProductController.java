@@ -7,7 +7,9 @@ import com.example.backend.mappers.Mapper;
 import com.example.backend.mappers.impl.ProductMapperImpl;
 import com.example.backend.services.CategoryService;
 import com.example.backend.services.ProductService;
+import com.example.backend.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.autoconfigure.mongo.PropertiesMongoConnectionDetails;
 import org.springframework.http.HttpStatus;
@@ -23,18 +25,14 @@ import java.util.stream.Collectors;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@AllArgsConstructor
 public class ProductController {
-
+    //dependency injection
     ProductService productService;
     Mapper<ProductEntity, ProductDto> productMapper;
     CategoryService categoryService;
-    ProductController(ProductService productService,Mapper<ProductEntity, ProductDto> productMapper,CategoryService categoryService)
-    {
-        this.productService = productService;
-        this.productMapper = productMapper;
-        this.categoryService = categoryService;
+    UserService userService;
 
-    }
     @PostMapping(path = "/products", consumes = MediaType.MULTIPART_FORM_DATA_VALUE )
     public ResponseEntity<ProductDto> createProduct(@RequestParam("product") String productJson,
                                                     @RequestParam("file") List<MultipartFile> file) throws IOException {
@@ -43,7 +41,7 @@ public class ProductController {
         for(int i=0; i < file.size(); i++)
         {
             String fileName = file.get(i).getOriginalFilename();
-            String filePath = "C:\\Users\\homor\\Desktop\\instrumente_backend\\images" + File.separator + fileName;
+            String filePath = "/home/iustin/Desktop/instrumente_backend/images" + File.separator + fileName;
             File dest = new File(filePath);
             file.get(i).transferTo(dest); // Save file to the file system
             productDto.getPhotoUrl().add(fileName);
@@ -51,6 +49,7 @@ public class ProductController {
 
         ProductEntity productEntity = productMapper.mapFrom(productDto);
         productEntity.setCategory(categoryService.findById(productDto.getCategoryId()));
+        productEntity.setSeller(userService.findUserById(productDto.getSeller()));
         ProductEntity productEntityFromDatabase = productService.save(productEntity);
         return new ResponseEntity<>(productService.mapEntityToDto(productEntityFromDatabase), HttpStatus.CREATED);
 

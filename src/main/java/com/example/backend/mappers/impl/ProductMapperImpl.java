@@ -20,6 +20,8 @@ public class ProductMapperImpl implements Mapper<ProductEntity, ProductDto> {
     }
     @Override
     public ProductDto mapTo(ProductEntity productEntity) {
+        modelMapper.typeMap(ProductEntity.class, ProductDto.class).addMappings(mapper -> {
+            mapper.map(src -> src.getSeller().getId(), ProductDto::setSeller);});
         return modelMapper.map(productEntity, ProductDto.class);
     }
 

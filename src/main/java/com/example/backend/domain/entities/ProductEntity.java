@@ -21,6 +21,7 @@ public class ProductEntity {
     @Column(name="urls")
     private List<String> photoUrl;
     private LocalDateTime postedDate = LocalDateTime.now();
+    private String productCondition;
     @ManyToOne
     @JoinColumn(name = "seller_id")
     private UserEntity seller;
