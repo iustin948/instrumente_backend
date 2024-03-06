@@ -69,4 +69,9 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductEntity> findProductsBySellerId(Long seller_id) {
         return productRespository.findBySellerId(seller_id);
     }
+
+    @Override
+    public List<ProductEntity> findByUserFavorite(Long seller_id) {
+        return productRespository.findByUserFavorite(seller_id);
+    }
 }

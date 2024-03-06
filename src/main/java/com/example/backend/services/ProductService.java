@@ -15,4 +15,5 @@ public interface ProductService {
     public List<ProductEntity> findFirst50New(Long category_id);
     public ProductDto mapEntityToDto(ProductEntity entity);
     public List<ProductEntity> findProductsBySellerId(Long seller_id);
+    public List<ProductEntity> findByUserFavorite(Long seller_id);
 }

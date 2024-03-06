@@ -15,4 +15,9 @@ public interface ProductRespository extends JpaRepository<ProductEntity,Long> {
 
     @Query(value = "SELECT * FROM product_entity where seller_id = :seller_id", nativeQuery = true)
     List<ProductEntity> findBySellerId(@Param("seller_id") Long seller_id);
+
+    @Query(value = "SELECT p.* FROM product_entity p " +
+            "INNER JOIN user_entity_favorite f ON p.id = f.favorite_id " +
+            "WHERE f.user_entity_id = :seller_id", nativeQuery = true)
+    List<ProductEntity> findByUserFavorite(@Param("seller_id") Long seller_id);
 }
